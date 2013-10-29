@@ -11,9 +11,19 @@
 <body>
 <script type="text/javascript">
   function transcribe(words) {
-    document.getElementById("speech").value = words;
+  	document.getElementById("speech").value = words;
+  
+  	var splitWords = words.split(" ");
+	var table = document.getElementById("gradeTable");
+	var row = table.insertRow(1);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+
+	cell1.innerHTML = splitWords[0];    
+    cell2.innerHTML = splitWords[2];
     document.getElementById("mic").value = "";
-    document.getElementById("speech").focus();
+    
+    
   }
 </script>
 
@@ -21,5 +31,9 @@
 <input id="mic"
   onwebkitspeechchange="transcribe(this.value)" x-webkit-speech>
 
-</body>
+<table id="gradeTable">
+	<tr>
+		<td id="goHere">Header</td>
+	</tr>
+</table>
 </body>
