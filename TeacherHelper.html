@@ -11,7 +11,7 @@
 <body>
 <script type="text/javascript">
   function transcribe(words) {
-  	document.getElementById("speech").value = words;
+  	document.getElementById("speech").value += words + "\\n";
   
   	var splitWords = words.split(" ");
 	var table = document.getElementById("gradeTable");
@@ -31,9 +31,10 @@
 <input id="mic"
   onwebkitspeechchange="transcribe(this.value)" x-webkit-speech>
 
-<table id="gradeTable">
+<table id="gradeTable" border="1">
 	<tr>
-		<td id="goHere">Header</td>
+		<th id>Student ID</th>
+		<th id>Grade</th>
 	</tr>
 </table>
 </body>
