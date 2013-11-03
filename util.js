@@ -2,7 +2,16 @@
 var final_transcript = '';
 var start_timestamp;
 var recognition;
+var state = 'inital';
+var roster = [new student('Joe', 'Smith', 1),new student('Kristy', 'Boyer', 2),
+				new student('Christopher', 'Fox', 3)]
 
+function student(firstname, lastname, id) {
+	this.firstname = firstname;
+	this.lastname = lastname;
+	this.id = id;
+	this.value = 0;
+}
 function startButton(event) {
   if (recognizing) {
     recognition.stop();
@@ -21,7 +30,8 @@ function onPageLoad() {
 	  recognition = new webkitSpeechRecognition();
 	  recognition.continuous = true;
 	  recognition.interimResults = true;
-	
+
+	  speechSynthesis.speak(new SpeechSynthesisUtterance('Welcome to Teacher\'s Helper'));
 	  recognition.onstart = function() {
 	    recognizing = true;
 	  };
