@@ -64,11 +64,10 @@ function onPageLoad() {
 	  
 
 
-	  speak('Welcome to Teacher\'s Helper.  We can now begin entering grades.', false);
+	  speak('Welcome to Teacher\'s Helper.  We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85', false);
 	  state=stateEnum.GRADE;
-	  speak('Please say a grade in the format: id received grade, as in 1 received 85', true);
-	  
-	  state=stateEnum.TASKID;
+	  	  
+
 
 	  
 	  
@@ -99,7 +98,7 @@ function onPageLoad() {
 	    document.getElementById('message').innerHTML = "Recognition ended";	  
 	    document.getElementById('transcript').innerHTML += "User: "+final_transcript + "</br>";
 	    if(state != stateEnum.ATTENDANCE) {
-	    	gradebookDialogue.handleInput();
+	    	handleInput();
 	    }
 	  };
 	
