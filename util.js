@@ -9,9 +9,12 @@ var stateEnum = {
 	ATTENDANCE : 2,
 	GRADE : 3,
 	GRADE_ENTERED : 4,
-	ERROR_REPEAT : 5,
+	ERROR_BOTH_INCORRECT : 5,
 	ERROR_GRADEFORMAT: 6,
-	GRADE_FINISHED : 7
+	ERROR_STUDENT_INCORRECT: 7,
+	ERROR_GRADE_INCORRECT: 8,
+	GRADE_FINISHED : 9,
+	GRADEBOOK_FINISHED: 10
 };
 
 var state = stateEnum.INITIAL;
@@ -64,7 +67,7 @@ function onPageLoad() {
 	  
 
 
-	  speak('Welcome to Teacher\'s Helper.  We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85', false);
+	  speakThenStart('Welcome to Teacher\'s Helper.  We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85', false);
 	  state=stateEnum.GRADE;
 	  	  
 
@@ -96,10 +99,6 @@ function onPageLoad() {
 	  recognition.onend = function() {
 	    recognizing = false;
 	    document.getElementById('message').innerHTML = "Recognition ended";	  
-	    document.getElementById('transcript').innerHTML += "User: "+final_transcript + "</br>";
-	    if(state != stateEnum.ATTENDANCE) {
-	    	handleInput();
-	    }
 	  };
 	
 	  recognition.onresult = function(event) {
@@ -112,8 +111,14 @@ function onPageLoad() {
 	    }
 	    for (var i = event.resultIndex; i < event.results.length; ++i) {
 	      if (event.results[i].isFinal) {
-	        final_transcript += event.results[i][0].transcript;
+	        final_transcript = event.results[i][0].transcript;
 	        document.getElementById('input').innerHTML = final_transcript;
+	        document.getElementById('transcript').innerHTML += "User: "+final_transcript + "</br>";
+	    	if(state != stateEnum.ATTENDANCE) {
+	    		state = stateEnum.GRADE_ENTERED;
+	    		handleGradeInput();
+	    	}
+
 	      } else {
 	        interim_transcript += event.results[i][0].transcript;
 	      }
@@ -121,8 +126,19 @@ function onPageLoad() {
 	};
 }
 
-//accepts the string to say and whether to start accepting input after speaking
-function speak(text, readyForInput) {
+//says the string sent in the parameter
+function speak(text) {
+	recognition.stop();
+	var u = new SpeechSynthesisUtterance();
+	u.text=text;
+	speechSynthesis.speak(u);
+	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
+	console.log('just speak');
+
+}
+
+//says the string sent in the parameter and then starts recognition
+function speakThenStart(text) {
 	recognition.stop();
 	var u = new SpeechSynthesisUtterance();
 	u.text=text;
@@ -130,10 +146,16 @@ function speak(text, readyForInput) {
 			document.getElementById('message').innerHTML = "In on end";
 			recognition.start();
 		};
+	u.onerror=function(event) {
+			document.getElementById('message').innerHTML = "In on error";
+			recognition.start();
+		};
+
 	speechSynthesis.speak(u);
 	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
-	console.log('stuff logged');
+	console.log('then start');
 
 }
+
 
 }
