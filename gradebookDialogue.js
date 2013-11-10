@@ -9,7 +9,7 @@
 //	ERROR_GRADE_INCORRECT: 8,
 //	GRADE_FINISHED : 9
 
-var tempId;
+var tempID;
 var tempGrade;
 
 var numGradesAdded;
@@ -53,24 +53,24 @@ function gradeHandler() {
 	
 	if (input.length == 3) {
 		if (input[0].match(/\d+/) != null) {
-			tempId = input[0];
-			console.log(tempId);
+			tempID = input[0];
+			console.log('got id ' + tempID);
 			studentCorrect = true;
 		}
 		
 		if (input[2].match(/\d+/) != null) {
-			tempGrade = input[0];
-			console.log(tempGrade);
+			tempGrade = input[2];
+			console.log('got grade ' + tempGrade);
 			gradeCorrect = true;
 		}
 		
 		if(gradeCorrect && studentCorrect) {
 			state = stateEnum.GRADE_FINISHED;
 		}
-		else if(gradeCorrect && !studentCorrect) }
+		else if(gradeCorrect && !studentCorrect) {
 			state = stateEnum.ERROR_STUDENT_INCORRECT;
 		}
-		else if(!gradeCorrect && studentCorrect) }
+		else if(!gradeCorrect && studentCorrect) {
 			state = stateEnum.ERROR_GRADE_INCORRECT;
 		}
 		else {
@@ -96,17 +96,43 @@ function promptGrade() {
 }
 
 function finalizeGrade() {
-	//add to table
-	numGradesAdded++;
-	if(numGradesAdded < roster) {
-		state = stateEnum.GRADE;
-	} else {
-		state = stateEnum.GRADEBOOK_FINISHED;
+	
+	var idFound = false;
+	var rows = document.getElementsByTagName("tr");
+	for(var i = 1; i < rows.length; i++) {
+		var cells = rows[i].getElementsByTagName("td");
+		console.log('num cells' + cells.length);
+		if(cells[2].innerHTML == tempID) {
+			idFound = true;
+			cells[3].innerHTML = tempGrade;
+			break;
+		}
 	}
+		
+	if(idFound) {
+		numGradesAdded++;
+		if(numGradesAdded < roster) {
+			state = stateEnum.GRADE;
+		} else {
+			state = stateEnum.GRADEBOOK_FINISHED;
+		}
+	}
+	else {
+		state = stateEnum.ERROR_STUDENT_INCORRECT;
+	}
+	handleGradeInput();
 }
 
 function promptEnd() {
 	speak('You gradebook for this assignment is complete.  Thanks for using Teacher\'s Helper');
+}
+
+function promptForStudent() {
+
+}
+
+function promptForGrade() {
+
 }
 
 

@@ -125,6 +125,7 @@ function onPageLoad() {
 	    }
 	};
 }
+}
 
 //says the string sent in the parameter
 function speak(text) {
@@ -154,8 +155,5 @@ function speakThenStart(text) {
 	speechSynthesis.speak(u);
 	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
 	console.log('then start');
-
-}
-
 
 }
