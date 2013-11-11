@@ -1,6 +1,16 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+		
+		<title>Teacher's Helper</title>
+		
+		<link rel="stylesheet" href="main.css" type="text/css" />
+		<script type="text/javascript" src="util.js"></script>
+		<script type="text/javascript" src="gradebookDialogue.js"></script>
+	</head>
 
+<<<<<<< HEAD
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>Teacher's Helper</title>
@@ -29,5 +39,46 @@
 </table>
 
 </body>
+=======
+	<body onload="onPageLoad()">		
+		<h1 align="center">Teacher's Helper</h1>
+
+		<p align="center">
+			Teacher's Helper is a tool that will help you enter your grades online then export them, so
+	        you may import them into any grading system that your school system uses through speech.
+		</p>
+ 
+		<div id="div_start">
+	    	<button id="start_button" onclick="startButton(event)">
+		        <img alt="Start" id="start_img"
+		          src="mic.gif"></img>
+	        </button>
+	    </div>
+	        
+	    <div id="message" style="font-weight:bold;">
+	    </div>
+	      
+	    <div id="input">
+	    </div>
+	      
+	    <div id="transcript" >
+			<p> </p>
+		    <p> </p>
+		    <h2>Transcript</h2>
+	    </div>
+	     
+	    <div id="grades">
+	    	<h2>Grades</h2>
+		    <table id="gradeTable" class="bordered">
+				<tr>
+					<th>Last Name</th>
+					<th>First Name</th>
+					<th>Student ID</th>
+					<th>Grade</th>
+				</tr>
+			</table>
+		</div>
+	</body>
+>>>>>>> Added CSS to the page.  Much cleaner look.
 
 </html>
