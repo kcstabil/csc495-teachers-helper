@@ -20,8 +20,8 @@ var stateEnum = {
 var state = stateEnum.INITIAL;
 
 //test roster, will be obtained from user in reality
-var roster = [new student('Joe', 'Smith', 1),new student('Kristy', 'Boyer', 2),
-				new student('Christopher', 'Fox', 3)];
+var roster = [new student('Joe', 'Smith', 11),new student('Kristy', 'Boyer', 12),
+				new student('Christopher', 'Fox', 13)];
 
 function student(firstname, lastname, id) {
 	this.firstname = firstname;
