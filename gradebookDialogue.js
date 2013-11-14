@@ -12,7 +12,7 @@
 var tempID;
 var tempGrade;
 
-var numGradesAdded = 0;
+var numGradesAdded;
 
 function handleGradeInput() {
 	console.log('Handle input in ' + state);
@@ -38,10 +38,8 @@ function handleGradeInput() {
 			break;
 		case stateEnum.GRADE_FINISHED:
 			finalizeGrade();
-			break;
 		case stateEnum.GRADEBOOK_FINISHED:
 			promptEnd();
-			break;
 		default:
 			console.log(state);
 	}
@@ -113,34 +111,27 @@ function finalizeGrade() {
 		
 	if(idFound) {
 		numGradesAdded++;
-		if(numGradesAdded < roster.length) {
+		if(numGradesAdded < roster) {
 			state = stateEnum.GRADE;
 		} else {
 			state = stateEnum.GRADEBOOK_FINISHED;
-			handleGradeInput();
 		}
 	}
 	else {
 		state = stateEnum.ERROR_STUDENT_INCORRECT;
-		handleGradeInput();
 	}
+	handleGradeInput();
 }
 
 function promptEnd() {
-	speak('Your grade book for this assignment is complete.  Thanks for using Teacher\'s Helper');
+	speak('You gradebook for this assignment is complete.  Thanks for using Teacher\'s Helper');
 }
 
 function promptForStudent() {
-	speak('Sorry we did not understand the student id.');
-	state = stateEnum.GRADE;
-	handleGradeInput();
 
 }
 
 function promptForGrade() {
-	speak('Sorry we did not understand the grade.');
-	state = stateEnum.GRADE;
-	handleGradeInput();
 
 }
 
