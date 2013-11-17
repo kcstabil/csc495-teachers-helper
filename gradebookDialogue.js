@@ -54,9 +54,11 @@ function handleGradeInput() {
 }
 
 function gradeHandler() {
-	var input = final_transcript.split(' ');
+	var input = final_transcript.trim().split(' ');
 	gradeCorrect = false;
 	studentCorrect = false;
+	
+	console.log(final_transcript + ", length " + input.length);
 	
 	if (input.length == 3) {
 		if (input[0].match(/\d+/) != null) {
