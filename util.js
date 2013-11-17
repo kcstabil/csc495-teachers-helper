@@ -12,9 +12,11 @@ var stateEnum = {
 	ERROR_BOTH_INCORRECT : 5,
 	ERROR_GRADEFORMAT: 6,
 	ERROR_STUDENT_INCORRECT: 7,
-	ERROR_GRADE_INCORRECT: 8,
-	GRADE_FINISHED : 9,
-	GRADEBOOK_FINISHED: 10
+	INPUT_STUDENT: 8,
+	ERROR_GRADE_INCORRECT: 9,
+	INPUT_GRADE: 10,
+	GRADE_FINISHED : 11,
+	GRADEBOOK_FINISHED: 12
 };
 
 var state = stateEnum.INITIAL;
@@ -68,10 +70,7 @@ function onPageLoad() {
 
 
 	  speakThenStart('Welcome to Teacher\'s Helper.  We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85', false);
-	  state=stateEnum.GRADE;
-	  	  
-
-
+	  state=stateEnum.GRADE_ENTERED;
 	  
 	  
 	  recognition.onstart = function() {
@@ -115,7 +114,7 @@ function onPageLoad() {
 	        document.getElementById('input').innerHTML = final_transcript;
 	        document.getElementById('transcript').innerHTML += "User: "+final_transcript + "</br>";
 	    	if(state != stateEnum.ATTENDANCE) {
-	    		state = stateEnum.GRADE_ENTERED;
+				console.log('State: ' + state);
 	    		handleGradeInput();
 	    	}
 
@@ -134,8 +133,6 @@ function speak(text) {
 	u.text=text;
 	speechSynthesis.speak(u);
 	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
-	console.log('just speak');
-
 }
 
 //says the string sent in the parameter and then starts recognition
@@ -154,6 +151,4 @@ function speakThenStart(text) {
 
 	speechSynthesis.speak(u);
 	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
-	console.log('then start');
-
 }

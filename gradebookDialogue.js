@@ -15,7 +15,7 @@ var tempGrade;
 var numGradesAdded = 0;
 
 function handleGradeInput() {
-	console.log('Handle input in ' + state);
+	console.log('State: ' + state);
 	switch(state)
 	{
 		case stateEnum.GRADE:
@@ -33,8 +33,14 @@ function handleGradeInput() {
 		case stateEnum.ERROR_STUDENT_INCORRECT:
 			promptForStudent();
 			break;
+		case stateEnum.INPUT_STUDENT:
+			processStudentInput();
+			break;
 		case stateEnum.ERROR_GRADE_INCORRECT:
 			promptForGrade();
+			break;
+		case stateEnum.INPUT_GRADE:
+			processGradeInput();
 			break;
 		case stateEnum.GRADE_FINISHED:
 			finalizeGrade();
@@ -43,7 +49,6 @@ function handleGradeInput() {
 			promptEnd();
 			break;
 		default:
-			console.log(state);
 	}
 	return;
 }
@@ -56,13 +61,11 @@ function gradeHandler() {
 	if (input.length == 3) {
 		if (input[0].match(/\d+/) != null) {
 			tempID = input[0];
-			console.log('got id ' + tempID);
 			studentCorrect = true;
 		}
 		
 		if (input[2].match(/\d+/) != null) {
 			tempGrade = input[2];
-			console.log('got grade ' + tempGrade);
 			gradeCorrect = true;
 		}
 		
@@ -95,15 +98,17 @@ function gradeErrorHandler() {
 
 function promptGrade() {
 	speakThenStart('Please enter a grade in the format id space grade');
+	state = stateEnum.GRADE_ENTERED;
+
 }
 
 function finalizeGrade() {
 	
+	console.log('finalizing ' + tempID+ ', ' + tempGrade);
 	var idFound = false;
 	var rows = document.getElementsByTagName("tr");
 	for(var i = 1; i < rows.length; i++) {
 		var cells = rows[i].getElementsByTagName("td");
-		console.log('num cells' + cells.length);
 		if(cells[2].innerHTML == tempID) {
 			idFound = true;
 			cells[3].innerHTML = tempGrade;
@@ -114,7 +119,7 @@ function finalizeGrade() {
 	if(idFound) {
 		numGradesAdded++;
 		if(numGradesAdded < roster.length) {
-			state = stateEnum.GRADE;
+			state = stateEnum.GRADE_ENTERED;
 		} else {
 			state = stateEnum.GRADEBOOK_FINISHED;
 			handleGradeInput();
@@ -131,17 +136,39 @@ function promptEnd() {
 }
 
 function promptForStudent() {
-	speak('Sorry we did not understand the student id.');
-	state = stateEnum.GRADE;
-	handleGradeInput();
-
+	speakThenStart('I\'m sorry.  Who received a grade of ' + tempGrade + '?');
+	state = stateEnum.INPUT_STUDENT;
 }
 
 function promptForGrade() {
-	speak('Sorry we did not understand the grade.');
-	state = stateEnum.GRADE;
-	handleGradeInput();
+	speakThenStart('I\'m sorry.  What grade did ' + tempID + ' receive?');
+	state = stateEnum.INPUT_GRADE;
+}
 
+function processStudentInput() {
+	var input = final_transcript.split(' ');
+
+	if (input[0].match(/\d+/) != null) {
+		tempID = input[0];
+		state = stateEnum.GRADE_FINISHED;
+		
+	} else {
+		state = stateEnum.ERROR_STUDENT_INCORRECT;
+	}		
+	handleGradeInput();	
+}
+
+function processGradeInput() {
+	var input = final_transcript.split(' ');
+
+	if (input[0].match(/\d+/) != null) {
+		tempGrade = input[0];
+		state = stateEnum.GRADE_FINISHED;
+		
+	} else {
+		state = stateEnum.ERROR_GRADE_INCORRECT;
+	}		
+	handleGradeInput();	
 }
 
 
