@@ -16,7 +16,10 @@ var stateEnum = {
 	ERROR_GRADE_INCORRECT: 9,
 	INPUT_GRADE: 10,
 	GRADE_FINISHED : 11,
-	GRADEBOOK_FINISHED: 12
+	GRADEBOOK_FINISHED : 12,
+	GET_EXPORT_RESPONSE : 13,
+	GET_FILE_NAME : 14,
+	END_SESSION : 15
 };
 
 var state = stateEnum.INITIAL;
@@ -69,12 +72,7 @@ function onPageLoad() {
 	  
 
 
-	  speakThenStart('Welcome to Teacher\'s Helper.  Would you like to take attendance or enter grades?', false);
-	  
-
-	  
-	  
-//We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85
+	  speakThenStart('Welcome to Teacher\'s Helper.  We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85', false);
 	  state=stateEnum.GRADE_ENTERED;
 	  
 	  
@@ -156,16 +154,4 @@ function speakThenStart(text) {
 
 	speechSynthesis.speak(u);
 	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
-}
-
-function matchgrade(transcript) {
-	var gradewords = {'grade'};
-    var input = final_transcript.trim().split(' ');
-	for (
-}
-
-function matchattendance(transcript) {
-	var gradewords = {'attendance'};
-	var input = final_transcript.trim().split(' ');
-	
 }

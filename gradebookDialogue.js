@@ -46,6 +46,15 @@ function handleGradeInput() {
 			finalizeGrade();
 			break;
 		case stateEnum.GRADEBOOK_FINISHED:
+			promptExport();
+			break;
+		case stateEnum.GET_EXPORT_RESPONSE:
+			processExportResponse();
+			break;
+		case stateEnum.GET_FILE_NAME:
+			processFileName();
+			break;
+		case stateEnum.END_SESSION:
 			promptEnd();
 			break;
 		default:
@@ -133,8 +142,32 @@ function finalizeGrade() {
 	}
 }
 
+function promptExport() {
+	speakThenStart('Your grade book is now complete.  Would you like to export to Excel? ');
+	state = stateEnum.GET_EXPORT_RESPONSE;
+}
+
+function processExportResponse() {
+	if(final_transcript.indexOf('yes') != -1) {
+		speakThenStart('What is the name of the assignment?');
+		state = stateEnum.GET_FILE_NAME;
+	}
+	else {
+		state = stateEnum.END_SESSION;
+		handleGradeInput();
+	}
+}
+
+function processFileName() {
+	var name = final_transcript;
+	var table = document.getElementById('gradeTable');
+	tableToExcel(gradeTable, name);
+	state = stateEnum.END_SESSION;
+	handleGradeInput();
+}
+
 function promptEnd() {
-	speak('Your grade book for this assignment is complete.  Thanks for using Teacher\'s Helper');
+	speak('Thanks for using Teacher\'s Helper');
 }
 
 function promptForStudent() {
