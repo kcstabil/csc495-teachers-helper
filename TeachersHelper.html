@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="main.css" type="text/css" />
 		<script type="text/javascript" src="util.js"></script>
 		<script type="text/javascript" src="gradebookDialogue.js"></script>
-		<script type="text/javascript" src="attendanceDialogue.js"></script>
+		<script type="text/javascript" src="tableToExcel.js"></script>
 	</head>
 	
 	<body onload="onPageLoad()">		
@@ -48,6 +48,7 @@
 					<th>Grade</th>
 				</tr>
 			</table>
+			<input type="button" onclick="tableToExcel('gradeTable', 'AssignmentName')" value="Export to Excel" />
 		</div>
 	</body>
 </html>
