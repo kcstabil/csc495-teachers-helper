@@ -69,7 +69,12 @@ function onPageLoad() {
 	  
 
 
-	  speakThenStart('Welcome to Teacher\'s Helper.  We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85', false);
+	  speakThenStart('Welcome to Teacher\'s Helper.  Would you like to take attendance or enter grades?', false);
+	  
+
+	  
+	  
+//We can now begin entering grades.  Please say a grade in the format: id received grade, as in 1 received 85
 	  state=stateEnum.GRADE_ENTERED;
 	  
 	  
@@ -151,4 +156,16 @@ function speakThenStart(text) {
 
 	speechSynthesis.speak(u);
 	document.getElementById('transcript').innerHTML += "Helper: "+text + "</br>";
+}
+
+function matchgrade(transcript) {
+	var gradewords = {'grade'};
+    var input = final_transcript.trim().split(' ');
+	for (
+}
+
+function matchattendance(transcript) {
+	var gradewords = {'attendance'};
+	var input = final_transcript.trim().split(' ');
+	
 }
