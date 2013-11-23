@@ -60,7 +60,6 @@ function promptGradeAtten() {
 // error called if system did not understand if user asked for grade or attendance
 function errorGradeAtten() {
     speakThenStart('I\'m sorry!  I did not understand what you said.  Did you want to check attendance or enter grades?');
-    promptGradeAtten();
 }
 
 function gradeAttenAskedTooMany() {

@@ -70,9 +70,8 @@ function onPageLoad() {
 
         }
 
-        speakThenStart('Welcome to Teacher\'s Helper.  Would you like to take attendance or enter grades?', false);
+        speakThenStart('Welcome to Teacher\'s Helper.  Would you like to take attendance or enter grades?');
         state = stateEnum.INITIAL;
-        decisionHandler();
 
         recognition.onstart = function () {
             recognizing = true;
@@ -114,13 +113,17 @@ function onPageLoad() {
                     final_transcript = event.results[i][0].transcript;
                     document.getElementById('input').innerHTML = final_transcript;
                     document.getElementById('transcript').innerHTML += "User: " + final_transcript + "</br>";
-                    if (state == stateEnum.GRADE) {
+                    if (state >= stateEnum.GRADE) {
                         console.log('State: ' + state);
                         handleGradeInput();
-                    } else if (state == stateEnum.ATTENDANCE) {
+                    } else if (state >= stateEnum.ATTENDANCE) {
                         console.log('State:' + state)
                         handleAttendanceInput();
-                    }
+                    } else {
+                    	console.log('State:' + state)
+                        decisionHandler();
+
+					} 
 
                 } else {
                     interim_transcript += event.results[i][0].transcript;
