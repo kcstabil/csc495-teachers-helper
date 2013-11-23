@@ -45,10 +45,40 @@ function promptGradeAtten() {
     if (grade == true && atten == false) {
         state = stateEnum.GRADE;
         document.getElementById('grades').style.visibility='visible';
+        //get and display roster
+        var table = document.getElementById("gradeTable");
+        for (var i = 0; i < roster.length; i++) {
+            var student = roster[i];
+            row = table.insertRow(i + 1);
+            cell1 = row.insertCell(0);
+            cell2 = row.insertCell(1);
+            cell3 = row.insertCell(2);
+            cell4 = row.insertCell(3);
+            cell1.innerHTML = student.lastname;
+            cell2.innerHTML = student.firstname;
+            cell3.innerHTML = student.id;
+            cell4.innerHTML = " ";
+
+        }
         decisionHandler();
     } else if (grade == false && atten == true) {
         state = stateEnum.ATTENDANCE;
         document.getElementById('attendance').style.visibility='visible';
+        //get and display roster
+        var table = document.getElementById("attendanceTable");
+        for (var i = 0; i < roster.length; i++) {
+            var student = roster[i];
+            row = table.insertRow(i + 1);
+            cell1 = row.insertCell(0);
+            cell2 = row.insertCell(1);
+            cell3 = row.insertCell(2);
+            cell4 = row.insertCell(3);
+            cell1.innerHTML = student.lastname;
+            cell2.innerHTML = student.firstname;
+            cell3.innerHTML = student.id;
+            cell4.innerHTML = " ";
+
+        }
         decisionHandler();
     } else {
         if (timesAsked <= 3) {

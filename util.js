@@ -54,21 +54,7 @@ function onPageLoad() {
         recognition.continuous = true;
         recognition.interimResults = true;
 
-        //get and display roster
-        var table = document.getElementById("gradeTable");
-        for (var i = 0; i < roster.length; i++) {
-            var student = roster[i];
-            row = table.insertRow(i + 1);
-            cell1 = row.insertCell(0);
-            cell2 = row.insertCell(1);
-            cell3 = row.insertCell(2);
-            cell4 = row.insertCell(3);
-            cell1.innerHTML = student.lastname;
-            cell2.innerHTML = student.firstname;
-            cell3.innerHTML = student.id;
-            cell4.innerHTML = " ";
-
-        }
+        
 
         speakThenStart('Welcome to Teacher\'s Helper.  Would you like to take attendance or enter grades?');
         state = stateEnum.INITIAL;
@@ -113,12 +99,14 @@ function onPageLoad() {
                     final_transcript = event.results[i][0].transcript;
                     document.getElementById('input').innerHTML = final_transcript;
                     document.getElementById('transcript').innerHTML += "User: " + final_transcript + "</br>";
-                    if (state >= stateEnum.GRADE) {
-                        console.log('State: ' + state);
-                        handleGradeInput();
-                    } else if (state >= stateEnum.ATTENDANCE) {
+                    
+                    if (state == stateEnum.ATTENDANCE || state >= 30 ) {
                         console.log('State:' + state)
                         handleAttendanceInput();
+                    } 
+                    else if (state >= stateEnum.GRADE) {
+                        console.log('State: ' + state);
+                        handleGradeInput();
                     } else {
                     	console.log('State:' + state)
                         decisionHandler();
