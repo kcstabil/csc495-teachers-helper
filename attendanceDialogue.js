@@ -10,8 +10,7 @@
 
 var tempID;
 var tempAttendance;
-
-var numAttendanceAdded = 0;
+var absentStudents = new Array();
 
 //source: http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript/
 var today = new Date();
@@ -27,7 +26,9 @@ var attenEnums = {
     START: 2,
     CALL_ROLE: 33,
     GET_ABSENT: 34,
-	COMPLETE: 35
+    FINISHED_GETTING_ABSENT: 35,
+    CONFIRM_ABSENT: 36, 
+	COMPLETE: 37
     };
 
 function handleAttendanceInput() {
@@ -45,6 +46,12 @@ function handleAttendanceInput() {
 			break;
 		case attenEnums.GET_ABSENT:
 			getAbsent();
+			break;
+		case attenEnums.FINISHED_GETTING_ABSENT:
+			finishedGettingAbsent();
+			break;
+		case attenEnums.CONFIRM_ABSENT:
+			confirmAbsent();
 			break;
 		default:
 	}
@@ -70,7 +77,6 @@ function handleRoleResponse() {
 
 function getAbsent() {
 	var input = final_transcript.trim().split(' ');
-	var numAbsent = 0;
 	for(var i = 0; i < input.length; i++) {
 		//if this word is a number, see if it is an id
 		if(input[i].match(/\d+/) != null) {
@@ -81,19 +87,51 @@ function getAbsent() {
 				var cells = rows[j].getElementsByTagName("td");
 				console.log(cells[2].innerHTML + ', ' + input[i]);
 				if(cells[2].innerHTML == input[i]) {
-					console.log('should add 0');
 					idFound = true;
 					cells[3].innerHTML = 0;
+					var name = cells[1].innerHTML + ' ' + cells[0].innerHTML;
+					absentStudents.push(name);
 					break;
 				}
-			}
-			
-			if(idFound) {
-				numAbsent++;
 			}
 		}
 	}
 	state = attenEnums.FINISHED_GETTING_ABSENT;
-
+	handleAttendanceInput();
 }
+
+function finishedGettingAbsent() {
+	state = attenEnums.CONFIRM_ABSENT;
+	if(absentStudents.length > 0) {
+		speak('I marked ' + absentStudents.toString() + 'absent' );
+		speakThenStart('Did I miss anyone?');
+	} else {
+		speakThenStart('So, no one is absent?' );
+	}
+}
+
+function confirmAbsent() {
+	//just asked 'did i miss anyone?'
+	if(absentStudents.length > 0) {
+		if(matchYes()) {
+			speakThenStart('Who is absent? Please list the student IDs');
+			state = attenEnums.GET_ABSENT;
+		} else {
+			speak('Your attendance is complete. Thank you for using Teacher\'s helper');
+		}
+	} 
+	//just assked 'so, no one is absent?'
+	else {
+		if(matchYes()) {
+			speak('Great. Your attendance is complete');
+		} else {
+			speakThenStart('Who is absent? Please list the student IDs');
+			state = attenEnums.GET_ABSENT;
+		}
+	}
+}
+
+
+
+
 

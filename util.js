@@ -150,7 +150,7 @@ function speakThenStart(text) {
 
 // returns whether a user said yes
 function matchYes() {
-    var yesWords = ["yes", "yep", "okay", "yeah", "affermative", "verily"];
+    var yesWords = ["yes", "yep", "okay", "yeah", "affermative", "verily", "correct", "sure"];
     var yes = false;
     var input = final_transcript.toLowerCase().trim().split(' ');
 
