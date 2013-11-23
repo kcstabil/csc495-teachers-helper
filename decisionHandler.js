@@ -44,9 +44,11 @@ function promptGradeAtten() {
 
     if (grade == true && atten == false) {
         state = stateEnum.GRADE;
+        document.getElementById('grades').style.visibility='visible';
         decisionHandler();
     } else if (grade == false && atten == true) {
         state = stateEnum.ATTENDANCE;
+        document.getElementById('attendance').style.visibility='visible';
         decisionHandler();
     } else {
         if (timesAsked <= 3) {

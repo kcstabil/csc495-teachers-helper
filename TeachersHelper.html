@@ -39,7 +39,7 @@
 		    <h2>Transcript</h2>
 	    </div>
 	     
-	    <div id="grades">
+	    <div id="grades" style="visibility:hidden">
 	    	<h2>Grades</h2>
 		    <table id="gradeTable" class="bordered">
 				<tr>
@@ -51,5 +51,19 @@
 			</table>
 			<input type="button" onclick="tableToExcel('gradeTable', 'AssignmentName')" value="Export to Excel" />
 		</div>
+
+		<div id="attendance" style="visibility:hidden">
+	    	<h2>Attendance</h2>
+		    <table id="attendanceTable" class="bordered">
+				<tr>
+					<th>Last Name</th>
+					<th>First Name</th>
+					<th>Student ID</th>
+					<th>Present</th>
+				</tr>
+			</table>
+			<input type="button" onclick="tableToExcel('attendanceTable', 'Date')" value="Export to Excel" />
+		</div>
+
 	</body>
 </html>
