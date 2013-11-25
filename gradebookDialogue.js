@@ -246,11 +246,34 @@ function processGradeInput() {
 
 function promptEdit() {
     speakThenStart('Would you like to make any changes before finishing this assignment?');
-    var input = final_transcript.split(' ');
 
-    if (input[0].match('yes')) {
+    if (matchYes()) {
         state = stateEnum.GRADE;
     } else {
+        var min = 100;
+        var max = 0;
+        var average = 0;
+        var median; 
+        var rows = document.getElementsByTagName("tr");
+        for (var i = 1; i < rows.length - 1; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var temp = cells[3].innerHTML;
+            console.log('Row ' + i + ' contains ' + temp);
+            console.log('total: ' + average + '& cur val:' + temp  );
+            average = Number(average) + Number(temp);
+            
+            if (min > temp) {
+                min = temp;
+            }
+            if (max < temp) {
+                max = temp;
+            }
+        }
+        console.log('numgrades ' + numGradesAdded);
+        average = average / numGradesAdded;
+
+        speak('This assignment\'s ranged from a minimum of ' + min + ' to a maximum of ' + max + ' with an average of '  + average + '.');
+
         state = stateEnum.GRADE_EXPORT_EXCEL;
     }
     handleGradeInput();
