@@ -48,6 +48,9 @@ function handleGradeInput() {
 	    case stateEnum.GRADEBOOK_FINISHED:
 	        promptEdit();
 			break;
+		case stateEnum.WAIT_FOR_EDIT:
+	        handleEdit();
+			break;
 		case stateEnum.GET_EXPORT_RESPONSE:
 			processExportResponse();
 			break;
@@ -245,9 +248,12 @@ function processGradeInput() {
 }
 
 function promptEdit() {
+	state = stateEnum.WAIT_FOR_EDIT;
     speakThenStart('Would you like to make any changes before finishing this assignment?');
+}
 
-    if (matchYes()) {
+function handleEdit() {
+	if (matchYes()) {
         state = stateEnum.GRADE;
     } else {
         var min = 100;
