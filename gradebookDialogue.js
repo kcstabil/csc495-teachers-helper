@@ -11,7 +11,7 @@
 
 var tempID;
 var tempGrade;
-
+var isEdit = false;
 var numGradesAdded = 0;
 
 function handleGradeInput() {
@@ -45,8 +45,8 @@ function handleGradeInput() {
 		case stateEnum.GRADE_FINISHED:
 			finalizeGrade();
 			break;
-		case stateEnum.GRADEBOOK_FINISHED:
-			promptExport();
+	    case stateEnum.GRADEBOOK_FINISHED:
+	        promptEdit();
 			break;
 		case stateEnum.GET_EXPORT_RESPONSE:
 			processExportResponse();
@@ -57,6 +57,9 @@ function handleGradeInput() {
 		case stateEnum.END_SESSION:
 			promptEnd();
 			break;
+	    case stateEnum.GRADE_EXPORT_EXCEL:
+	        promptExport();
+	        break;
 		default:
 	}
 	return;
@@ -67,9 +70,11 @@ function gradeHandler() {
 	gradeCorrect = false;
 	studentCorrect = false;
 	
+
 	console.log(final_transcript + ", length " + input.length);
 	
 	if (input.length == 3) {
+	    isEdit = false;
 		if (input[0].match(/\d+/) != null) {
 			tempID = input[0];
 			studentCorrect = true;
@@ -92,43 +97,76 @@ function gradeHandler() {
 		else {
 			state = stateEnum.ERROR_BOTH_INCORRECT;
 		}
+	}
+	else if (input.length == 4) {
+	    isEdit = true;
+	    console.log('EDIT happened');
+	    if (input[0].match('edit')) {
+	        if (input[1].match(/\d+/) != null) {
+	            tempID = input[1];
+	            studentCorrect = true;
+	        }
 
-		
-	} else {
+	        if (input[3].match(/\d+/) != null) {
+	            tempGrade = input[3];
+	            gradeCorrect = true;
+	        }
+
+	        if (gradeCorrect && studentCorrect) {
+	            state = stateEnum.GRADE_FINISHED;
+	        }
+	        else if (gradeCorrect && !studentCorrect) {
+	            state = stateEnum.ERROR_STUDENT_INCORRECT;
+	        }
+	        else if (!gradeCorrect && studentCorrect) {
+	            state = stateEnum.ERROR_GRADE_INCORRECT;
+	        }
+	        else {
+	            state = stateEnum.ERROR_BOTH_INCORRECT;
+	        }
+	    }
+	    else {
+	        state = stateEnum.ERROR_GRADEFORMAT;
+	    }
+	}
+	else {
 		state = stateEnum.ERROR_GRADEFORMAT;
-		
 	}
 	handleGradeInput();
 }
 
 function gradeErrorHandler() {
-	speak('Sorry we did not understand.');
+	speak('Sorry I did not understand.');
 	state = stateEnum.GRADE;
 	handleGradeInput();
 }
 
 function promptGrade() {
-	speakThenStart('Please enter a grade in the format id space grade');
+	speakThenStart('Please enter a grade in the format id space grade or edit id space grade.');
 	state = stateEnum.GRADE_ENTERED;
-
 }
 
 function finalizeGrade() {
-	
 	console.log('finalizing ' + tempID+ ', ' + tempGrade);
 	var idFound = false;
+	var emptyGrade = false;
 	var rows = document.getElementsByTagName("tr");
-	for(var i = 1; i < rows.length; i++) {
+	for(var i = 1; i < rows.length - 1; i++) {
 		var cells = rows[i].getElementsByTagName("td");
 		if(cells[2].innerHTML == tempID) {
-			idFound = true;
+		    idFound = true;
+		    if (cells[3].innerHTML == ' ') {
+		        emptyGrade = true;
+		    }
 			cells[3].innerHTML = tempGrade;
 			break;
 		}
 	}
 		
-	if(idFound) {
-		numGradesAdded++;
+	if (idFound) {
+	    if (emptyGrade == true) {
+	        numGradesAdded++;
+	    }
 		if(numGradesAdded < roster.length) {
 			state = stateEnum.GRADE_ENTERED;
 		} else {
@@ -148,7 +186,7 @@ function promptExport() {
 }
 
 function processExportResponse() {
-	if(final_transcript.indexOf('yes') != -1) {
+	if(matchYes()) {
 		speakThenStart('What is the name of the assignment?');
 		state = stateEnum.GET_FILE_NAME;
 	}
@@ -206,4 +244,14 @@ function processGradeInput() {
 	handleGradeInput();	
 }
 
+function promptEdit() {
+    speakThenStart('Would you like to make any changes before finishing this assignment?');
+    var input = final_transcript.split(' ');
 
+    if (input[0].match('yes')) {
+        state = stateEnum.GRADE;
+    } else {
+        state = stateEnum.GRADE_EXPORT_EXCEL;
+    }
+    handleGradeInput();
+}

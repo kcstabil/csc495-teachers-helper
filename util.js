@@ -19,7 +19,8 @@ var stateEnum = {
     GRADEBOOK_FINISHED: 12,
     GET_EXPORT_RESPONSE: 13,
     GET_FILE_NAME: 14,
-    END_SESSION: 15
+    END_SESSION: 15,
+    GRADE_EXPORT_EXCEL:16
 };
 
 var state = stateEnum.INITIAL;
