@@ -329,9 +329,8 @@ function processAssignmentConfirmation() {
         var cells = rows[0].getElementsByTagName("th");
         cells[3].innerHTML = tempAssignName;
     } else {
-        firstime = true
+        state = stateEnum.ASK_ASSIGNMENT;
         speak('Sorry for missunderstanding the name of the assignment.')
-        //state = stateEnum.ASK_ASSIGNMENT;
     }
     handleGradeInput();
 }
