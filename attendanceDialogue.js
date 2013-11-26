@@ -99,7 +99,7 @@ function getAbsent() {
 					idFound = true;
 					cells[3].innerHTML = 0;
 					var name = cells[1].innerHTML + ' ' + cells[0].innerHTML;
-					absentStudents.push(name);
+					absentStudents.push(' ' + name);
 					break;
 				}
 			}
@@ -112,7 +112,7 @@ function getAbsent() {
 function finishedGettingAbsent() {
 	state = attenEnums.CONFIRM_ABSENT;
 	if(absentStudents.length > 0) {
-		speak('I marked ' + absentStudents.toString() + 'absent' );
+		speak('I marked' + absentStudents.toString() + 'absent' );
 		speakThenStart('Did I miss anyone?');
 	} else {
 		speakThenStart('So, no one is absent?' );
@@ -167,7 +167,7 @@ function handleRollResponse() {
 		currentCells[3].innerHTML = '100';
 	} else {
 		currentCells[3].innerHTML = '0';
-		absentStudents.push(name);		
+		absentStudents.push(' ' + name);		
 	}
 	
 	if(rollIndex < rows.length-1) {
@@ -176,6 +176,7 @@ function handleRollResponse() {
 		
 	} else {
 		state = attenEnums.FINISHED_GETTING_ABSENT;
+		speak('Calling roll is complete');
 	}
 	
 	handleAttendanceInput();
