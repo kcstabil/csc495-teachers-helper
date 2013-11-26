@@ -11,15 +11,23 @@
 
 var tempID;
 var tempGrade;
+var tempAssignName;
 var isEdit = false;
 var numGradesAdded = 0;
+var firsttime = true;
 
 function handleGradeInput() {
 	console.log('State: ' + state);
 	switch(state)
 	{
-		case stateEnum.GRADE:
-			promptGrade();
+	    case stateEnum.GRADE:
+	        if (firsttime) {
+	            state = stateEnum.ASK_ASSIGNMENT;
+	            firsttime = false;
+	            handleGradeInput();
+	        } else {
+	            promptGrade();
+	        }
 			break;
 		case stateEnum.GRADE_ENTERED:
 			gradeHandler();
@@ -62,6 +70,18 @@ function handleGradeInput() {
 			break;
 	    case stateEnum.GRADE_EXPORT_EXCEL:
 	        promptExport();
+	        break;
+	    case stateEnum.ASK_ASSIGNMENT:
+	        promptForAssigment();
+	        break;
+	    case stateEnum.GET_ASSIGNMENT:
+	        processAssignment();
+	        break;
+	    case stateEnum.CORRECT_ASSIGNMENT:
+	        promptAssignmentConfirmation();
+	        break;
+	    case stateEnum.CHECK_ASSIGN_CORRECT:
+	        processAssignmentConfirmation();
 	        break;
 		default:
 	}
@@ -281,6 +301,39 @@ function handleEdit() {
         speak('This assignment\'s ranged from a minimum of ' + min + ' to a maximum of ' + max + ' with an average of '  + average + '.');
 
         state = stateEnum.GRADE_EXPORT_EXCEL;
+    }
+    handleGradeInput();
+}
+
+function promptForAssigment() {
+    state = stateEnum.GET_ASSIGNMENT;
+    speakThenStart('What is the name of your assignment?');
+    handleGradeInput();
+}
+
+function processAssignment() {
+    tempAssignName = final_transcript;
+    console.log(tempAssignName);
+    state = stateEnum.CORRECT_ASSIGNMENT;
+    handleGradeInput();
+}
+
+function promptAssignmentConfirmation() {
+    speakThenStart('Is ' + tempAssignName + ' the correct name?');
+    state = stateEnum.CHECK_ASSIGN_CORRECT;
+    handleGradeInput();
+}
+
+function processAssignmentConfirmation() {
+    if (matchYes()) {
+        state = stateEnum.GRADE;
+        var rows = document.getElementsByTagName("tr");
+        var cells = rows[0].getElementsByTagName("th");
+        cells[3].innerHTML = tempAssignName;
+    } else {
+        firstime = true
+        speak('Sorry for missunderstanding the name of the assignment.')
+        //state = stateEnum.ASK_ASSIGNMENT;
     }
     handleGradeInput();
 }
