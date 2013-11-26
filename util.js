@@ -63,29 +63,29 @@ function onPageLoad() {
 
         recognition.onstart = function () {
             recognizing = true;
-            document.getElementById('message').innerHTML = "Started";
+            document.getElementById('message').innerHTML = "<p align='center'>Started</p>";
         };
 
         recognition.onerror = function (event) {
             if (event.error == 'no-speech') {
-                document.getElementById('message').innerHTML = "Didn't capture any speech";
+                document.getElementById('message').innerHTML = "<p align='center'>Didn't capture any speech</p>";
             }
             if (event.error == 'audio-capture') {
-                document.getElementById('message').innerHTML = "Audio capture error";
+                document.getElementById('message').innerHTML = "<p align='center'>Audio capture error</p>";
             }
             if (event.error == 'not-allowed') {
                 if (event.timeStamp - start_timestamp < 100) {
-                    document.getElementById('message').innerHTML = "Time out error";
+                    document.getElementById('message').innerHTML = "<p align='center'>Time out error</p>";
                 }
                 else {
-                    document.getElementById('message').innerHTML = "Not allowed error";
+                    document.getElementById('message').innerHTML = "<p align='center'>Not allowed error</p>";
                 }
             }
         };
 
         recognition.onend = function () {
             recognizing = false;
-            document.getElementById('message').innerHTML = "Recognition ended";
+            document.getElementById('message').innerHTML = "<p align='center'>Recognition ended</p>";
         };
 
         recognition.onresult = function (event) {
@@ -93,14 +93,13 @@ function onPageLoad() {
             if (typeof (event.results) == 'undefined') {
                 recognition.onend = null;
                 recognition.stop();
-                document.getElementById('message').innerHTML = "Recognition is not supported by your browser";
+                document.getElementById('message').innerHTML = "<p align='center'>Recognition is not supported by your browser</p>";
                 return;
             }
             for (var i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) {
                     final_transcript = event.results[i][0].transcript;
-                    document.getElementById('input').innerHTML = final_transcript;
-                    document.getElementById('transcript').innerHTML += "User: " + final_transcript + "</br>";
+                    document.getElementById('transcript').innerHTML += "<b>User: " + final_transcript + "</b></br>";
                     
                     if (state == stateEnum.ATTENDANCE || state >= 30 ) {
                         console.log('State:' + state)
@@ -138,11 +137,11 @@ function speakThenStart(text) {
     var u = new SpeechSynthesisUtterance();
     u.text = text;
     u.onend = function (event) {
-        document.getElementById('message').innerHTML = "In on end";
+        document.getElementById('message').innerHTML = "<p align='center'>In on end</p>";
         recognition.start();
     };
     u.onerror = function (event) {
-        document.getElementById('message').innerHTML = "In on error";
+        document.getElementById('message').innerHTML = "<p align='center'>In on error</p>";
         recognition.start();
     };
 

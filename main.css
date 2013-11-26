@@ -1,5 +1,4 @@
 ﻿body {
-    width: 600px;
     margin: 40px auto;
     font-family: 'trebuchet MS', 'Lucida sans', Arial;
     font-size: 14px;
@@ -81,8 +80,28 @@ table {
     border-radius: 0 0 6px 0;
 }
 
-div.transcript {
-	
-	
-	
+#transcript {
+	border:2px solid #bfd0ea;
+    padding:10px 10px; 
+    background:#dce9f9;
+    width:20%;
+    height: 600px;
+    overflow: auto ;
+    border-radius:10px;	
+    float: left;
+    position: absolute;
+    top: 220px;
+    margin-left: 20%
+}
+
+.tableHolder {
+    visibility: hidden;
+    position: absolute;
+    width: 700px;
+    height: 600px;
+    top: 220px;
+    margin-left: 45%;
+    border:2px solid #bfd0ea;
+    padding:10px 10px; 
+    border-radius:10px;	
 }

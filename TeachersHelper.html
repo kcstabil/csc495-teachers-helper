@@ -16,44 +16,43 @@
 	<body onload="onPageLoad()">		
 		<h1 align="center">Teacher's Helper</h1>
 
-		<p align="center">
-			Teacher's Helper is a tool that will help you enter your grades online then export them, so
-	        you may import them into any grading system that your school system uses through speech.
+		<p align="center" style="width:500">
+			Teacher's Helper is a tool that will help you enter your grades online then export them for use in your school system's grading tool. 
 		</p>
- 
+        
 		<div id="div_start">
-	    	<button id="start_button" onclick="startButton(event)">
-		        <img alt="Start" id="start_img"
-		          src="mic.gif"></img>
-	        </button>
+            <p align="center">
+                <button id="start_button" onclick="startButton(event)">
+                    <img alt="Start" id="start_img"
+                         src="mic.gif"/></img>
+                </button>
+            </p>
 	    </div>
 	        
-	    <div id="message" style="font-weight:bold;">
+	    <div id="message" style="font-weight:bold; ">
 	    </div>
+	
 	      
-	    <div id="input">
-	    </div>
-	      
-	    <div id="transcript" >
+	    <div id="transcript">
 			<p> </p>
 		    <p> </p>
 		    <h2>Transcript</h2>
 	    </div>
 	     
-	    <div id="grades" style="visibility:hidden">
-	    	<h2>Grades</h2>
-		    <table id="gradeTable" class="bordered">
-				<tr>
-					<th>Last Name</th>
-					<th>First Name</th>
-					<th>Student ID</th>
-					<th>Grade</th>
-				</tr>
-			</table>
-			<input type="button" onclick="tableToExcel('gradeTable', 'AssignmentName')" value="Export to Excel" />
-		</div>
+        <div id="grades" class="tableHolder">
+            <h2>Grades</h2>
+            <table id="gradeTable" class="bordered">
+                <tr>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Student ID</th>
+                    <th>Grade</th>
+                </tr>
+            </table>
+            <input type="button" onclick="tableToExcel('gradeTable', 'AssignmentName')" value="Export to Excel" />
+        </div>
 
-		<div id="attendance" style="visibility:hidden">
+		<div id="attendance" class="tableHolder" style="visibility:hidden">
 	    	<h2>Attendance</h2>
 		    <table id="attendanceTable" class="bordered">
 				<tr>
