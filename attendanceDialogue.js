@@ -12,6 +12,11 @@ var tempID;
 var tempAttendance;
 var absentStudents = new Array();
 
+var rows = document.getElementsByTagName("tr");
+var rollIndex=2;
+var currentCells;
+var name;
+
 //source: http://stackoverflow.com/questions/1531093/how-to-get-current-date-in-javascript/
 var today = new Date();
 var dd = today.getDate();
@@ -21,14 +26,15 @@ var yyyy = today.getFullYear();
 if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
 
 var attenEnums = {
-    WAIT_FOR_ROLE: 30,
+    WAIT_FOR_ROLL: 30,
     ERROR: 31,
     START: 2,
-    CALL_ROLE: 33,
+    CALL_ROLL: 33,
     GET_ABSENT: 34,
     FINISHED_GETTING_ABSENT: 35,
     CONFIRM_ABSENT: 36, 
-	COMPLETE: 37
+	COMPLETE: 37,
+	ROLL_RESPONSE: 38
     };
 
 function handleAttendanceInput() {
@@ -38,11 +44,14 @@ function handleAttendanceInput() {
 	    case stateEnum.ATTENDANCE:
 			promptAttendance();
 			break;
-		case attenEnums.WAIT_FOR_ROLE:
-			handleRoleResponse();
+		case attenEnums.WAIT_FOR_ROLL:
+			handleRollChoice();
 			break;
-		case attenEnums.CALL_ROLE:
-			callRole();
+		case attenEnums.CALL_ROLL:
+			callRoll();
+			break;
+		case attenEnums.ROLL_RESPONSE:
+			handleRollResponse();
 			break;
 		case attenEnums.GET_ABSENT:
 			getAbsent();
@@ -60,15 +69,16 @@ function handleAttendanceInput() {
 
 function promptAttendance() {
     console.log('Attendance works!');
-    speakThenStart('Would you like me to call role?');
-    state = attenEnums.WAIT_FOR_ROLE;
+    speakThenStart('Would you like me to call roll?');
+    state = attenEnums.WAIT_FOR_ROLL;
     return;
 }
 
-function handleRoleResponse() {
+function handleRollChoice() {
 	if(matchYes()) {
-		state = attenEnums.CALL_ROLE;
-		attendanceHandler();
+		state = attenEnums.CALL_ROLL;
+		speak('Okay, I will call roll. Students, please say here when your name is called. If a student is absent, please say absent when their name is called');
+		handleAttendanceInput();
 	} else {
 		speakThenStart('Who is absent? Please list the student IDs');
 		state = attenEnums.GET_ABSENT;
@@ -81,7 +91,6 @@ function getAbsent() {
 		//if this word is a number, see if it is an id
 		if(input[i].match(/\d+/) != null) {
 			var idFound = false;
-			var rows = document.getElementsByTagName("tr");
 			
 			for(var j = 2; j < rows.length; j++) {
 				var cells = rows[j].getElementsByTagName("td");
@@ -117,12 +126,14 @@ function confirmAbsent() {
 			speakThenStart('Who is absent? Please list the student IDs');
 			state = attenEnums.GET_ABSENT;
 		} else {
+			fillHundreds();
 			speak('Your attendance is complete. Thank you for using Teacher\'s helper');
 		}
 	} 
 	//just assked 'so, no one is absent?'
 	else {
 		if(matchYes()) {
+			fillHundreds();
 			speak('Great. Your attendance is complete');
 		} else {
 			speakThenStart('Who is absent? Please list the student IDs');
@@ -131,7 +142,42 @@ function confirmAbsent() {
 	}
 }
 
+function fillHundreds() {
+			
+	for(var i = 2; i < rows.length; i++) {
+		var cells = rows[i].getElementsByTagName("td");
+		if(cells[3].innerHTML != '0') {
+			cells[3].innerHTML = '100';
+		}
+	}
+}
 
+function callRoll() {
+	console.log(rows.length);
+	currentCells = rows[rollIndex].getElementsByTagName("td");
+	name = currentCells[1].innerHTML + ' ' + currentCells[0].innerHTML;
+	state = attenEnums.ROLL_RESPONSE;
+	
+	speakThenStart(name);
+}
 
+function handleRollResponse() {
+	if(matchHere()) {
+		currentCells[3] = '100';
+	} else {
+		currentCells[3] = '0';
+		absentStudents.push(name);		
+	}
+	
+	if(rollIndex < rows.length-1) {
+		rollIndex++;
+		state = attenEnums.CALL_ROLE;
+		
+	} else {
+		state = attenEnums.FINISHED_GETTING_ABSENT;
+	}
+	
+	handleAttendanceInput
+}
 
 

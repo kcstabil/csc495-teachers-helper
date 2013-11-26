@@ -151,7 +151,7 @@ function speakThenStart(text) {
 
 // returns whether a user said yes
 function matchYes() {
-    var yesWords = ["yes", "yep", "okay", "yeah", "affermative", "verily", "correct", "sure"];
+    var yesWords = ["yes", "yep", "okay", "yeah", "affermative", "verily", "correct", "sure", 'gas'];
     var yes = false;
     var input = final_transcript.toLowerCase().trim().split(' ');
 
@@ -161,4 +161,18 @@ function matchYes() {
         }
     }
     return yes;
+}
+
+// returns whether a student said here
+function matchHere() {
+    var hereWords = ["here", "present", "hear", "her", "deer"];
+    var here = false;
+    var input = final_transcript.toLowerCase().trim().split(' ');
+
+    for (i = 0; i <= hereWords.length; i++) {
+        if (hereWords.indexOf(input[i]) > -1) {
+            here = true;
+        }
+    }
+    return here;
 }
