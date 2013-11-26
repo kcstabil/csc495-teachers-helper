@@ -318,8 +318,8 @@ function processAssignment() {
 }
 
 function promptAssignmentConfirmation() {
-    speakThenStart('Is ' + tempAssignName + ' the correct name?');
     state = stateEnum.CHECK_ASSIGN_CORRECT;
+    speakThenStart('Is ' + tempAssignName + ' the correct name?');
 }
 
 function processAssignmentConfirmation() {
