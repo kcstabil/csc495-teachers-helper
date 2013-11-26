@@ -162,22 +162,23 @@ function callRoll() {
 }
 
 function handleRollResponse() {
+	console.log('handling response');
 	if(matchHere()) {
-		currentCells[3] = '100';
+		currentCells[3].innerHTML = '100';
 	} else {
-		currentCells[3] = '0';
+		currentCells[3].innerHTML = '0';
 		absentStudents.push(name);		
 	}
 	
 	if(rollIndex < rows.length-1) {
 		rollIndex++;
-		state = attenEnums.CALL_ROLE;
+		state = attenEnums.CALL_ROLL;
 		
 	} else {
 		state = attenEnums.FINISHED_GETTING_ABSENT;
 	}
 	
-	handleAttendanceInput
+	handleAttendanceInput();
 }
 
 

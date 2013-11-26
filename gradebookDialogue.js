@@ -308,7 +308,6 @@ function handleEdit() {
 function promptForAssigment() {
     state = stateEnum.GET_ASSIGNMENT;
     speakThenStart('What is the name of your assignment?');
-    handleGradeInput();
 }
 
 function processAssignment() {
@@ -321,7 +320,6 @@ function processAssignment() {
 function promptAssignmentConfirmation() {
     speakThenStart('Is ' + tempAssignName + ' the correct name?');
     state = stateEnum.CHECK_ASSIGN_CORRECT;
-    handleGradeInput();
 }
 
 function processAssignmentConfirmation() {
